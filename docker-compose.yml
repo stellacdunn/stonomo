@@ -1,5 +1,5 @@
 services:
-  stonomofrontend:
+  frontend:
     build:
       context: .
       dockerfile: Dockerfile.reactUI
@@ -7,7 +7,7 @@ services:
       - "3000:3000"
     depends_on:
       - db
-  stonomobackend:
+  backend:
     build:
       context: ./server
       dockerfile: Dockerfile.node
@@ -17,9 +17,9 @@ services:
       - db
   db:
     volumes:
-      - stonomo_db:/data/db
+      - db:/data/db
     image: mongo:latest
     ports:
       - "27017:27017"
 volumes:
-  stonomo_db:
+  db:
