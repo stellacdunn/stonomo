@@ -1,0 +1,12 @@
+{
+  "name": "stonomo_server",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Backend for StoNoMo app",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "S. Dunn <stellacdunn@gmail.com>",
+  "license": "UNLICENSED"
+}
