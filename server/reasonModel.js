@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-export { Reason, addReason, /*, updateReason, deleteReason */}
+export { Reason, addReason, getReasons /*, updateReason, deleteReason */}
 
 //TODO: add indexing
 const reasonsSchema = new mongoose.Schema({
@@ -10,7 +10,10 @@ const reasonsSchema = new mongoose.Schema({
 
 const Reason = mongoose.model("Reason", reasonsSchema)
 
-const addReason = async(label, desc) => {
-	let reason = new Reason(label, desc)
-	reason.save().then(console.log)
+async function addReason(label, desc) {
+	await Reason.create(new Reason({label, desc}))
+}
+
+async function getReasons() {
+	return await Reason.find()
 }
