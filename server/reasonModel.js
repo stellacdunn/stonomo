@@ -15,5 +15,5 @@ async function addReason(label, desc) {
 }
 
 async function getReasons() {
-	return await Reason.find()
+	return Reason.find()
 }
