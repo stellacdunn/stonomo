@@ -12,10 +12,9 @@
   "author": "Stella Dunn <stellacdunn@gmail.com>",
   "license": "UNLICENSED",
   "dependencies": {
-    "cors": "^2.8.5",
     "express": "^4.18.2",
     "mongoose": "^7.0.5",
-    "multiparty": "latest",
+    "multiparty": "*",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "morgan": "~1.9.1"
