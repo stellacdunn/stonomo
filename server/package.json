@@ -15,8 +15,8 @@
     "express": "^4.18.2",
     "mongoose": "^7.0.5",
     "multiparty": "*",
-    "cookie-parser": "~1.4.4",
-    "debug": "~2.6.9",
-    "morgan": "~1.9.1"
+    "cookie-parser": "^1.4.4",
+    "debug": "^2.6.9",
+    "morgan": "^1.9.1"
   }
 }
