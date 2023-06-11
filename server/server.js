@@ -6,11 +6,11 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 
-import { populateReasons } from './handlers/reasonsHandler'
-// import { Eviction} from './models/evictionModel';
-// import { Tenant } from './models/tenantModel';
-// import('./facilityModel.js');
-// import('./userModel.js');
+import * as reason from './models/reasonsModel'
+import * as eviction from './models/evictionModel';
+import * as tenant from './models/tenantModel';
+// import * as facility from './models/facilityModel';
+// import * as user from './models/userModel';
 
 console.log('Stonomo Server starting - ' + Date.now());
 
@@ -43,22 +43,20 @@ app.get('/', (req, res) => {
 });
 
 app.post('/search', (req, res, next) => {
-    //handle POST at /search
+    const { fname, mname, lname, street1, street2, city, state, zip, birthdate, email, phone, ...otherFields } = req.body;
 
-    const searchRequest = {
-        //use Tenant.find to search for people
-        //Evictions.find({tenant: Tenant.find...})
-    }
+    //use tenant.find to search for people
+    //eviction.find({tenant: tenant.find...})
 
     req.on('error', printErrorAndNext(next)
     );
 });
 
 console.log('Populating eviction reasons');
-const reasons = await populateReasons();
+const reasons = await reason.populateReasons();
 
 //Populate tables
-console.log('Reasons:');
+console.log('Loaded eviction reasons:');
 console.log(reasons);
 
 console.log(`Listening on port ${PORT}`);
