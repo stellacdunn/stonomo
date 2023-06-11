@@ -6,11 +6,11 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 
-import * as reason from './models/reasonsModel'
-import * as eviction from './models/evictionModel';
-import * as tenant from './models/tenantModel';
-// import * as facility from './models/facilityModel';
-// import * as user from './models/userModel';
+import * as Reason from './models/reasonsModel'
+import * as Eviction from './models/evictionModel';
+import * as Tenant from './models/tenantModel';
+import * as User from './models/userModel';
+import * as Facility from './models/facilityModel';
 
 console.log('Stonomo Server starting - ' + Date.now());
 
@@ -37,6 +37,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+router.param('user', function (req, res, next, id) {
+    // try to get the user details from the User model and attach it to the request object
+    User.find(id, function (err, user) {
+      if (err) {
+        next(err)
+      } else if (user) {
+        req.user = user
+        next()
+      } else {
+        next(new Error('failed to load user'))
+      }
+    })
+  })
+
 app.get('/', (req, res) => {
     console.log('connecting to route route "/"');
     res.status(200).send('Stonomo server');
@@ -45,15 +59,14 @@ app.get('/', (req, res) => {
 app.post('/search', (req, res, next) => {
     const { fname, mname, lname, street1, street2, city, state, zip, birthdate, email, phone, ...otherFields } = req.body;
 
-    //use tenant.find to search for people
-    //eviction.find({tenant: tenant.find...})
+    //use Tenant.find to search for people
+    //Eviction.find({tenant: Tenant.find...})
 
-    req.on('error', printErrorAndNext(next)
-    );
+    req.on('error', printErrorAndNext(next));
 });
 
 console.log('Populating eviction reasons');
-const reasons = await reason.populateReasons();
+const reasons = await Reason.populateReasons();
 
 //Populate tables
 console.log('Loaded eviction reasons:');
