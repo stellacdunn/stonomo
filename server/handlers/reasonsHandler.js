@@ -13,5 +13,5 @@ async function populateReasons() {
         addReason(r, desc).catch(console.error);
     }
 
-    return getReasons();
+    return await getReasons();
 }

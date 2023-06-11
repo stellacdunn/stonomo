@@ -1,6 +1,7 @@
-import mongoose from 'mongoose'
+'use strict'
+import mongoose from 'mongoose';
 
-export { Tenant, addTenant /*, updateTenant, deleteTenant */}
+export { Tenant, addTenant /*, updateTenant, deleteTenant */};
 
 const tenantSchema = new mongoose.Schema({
 	fname: {type: String, select: true, required: true},
@@ -9,12 +10,11 @@ const tenantSchema = new mongoose.Schema({
 	email: String, //TODO: add validation
 	address: String, //TODO: add validation via USPS(?)
 	dob: Date //TODO: add validation; age > 18
-}, {timestamps: true})
+}, {timestamps: true});
 
+const Tenant = mongoose.model("Tenant", tenantSchema);
 
-const Tenant = mongoose.model("Tenant", tenantSchema)
-
-const addTenant = async(fname, lname, phone, email, address, dob) => {
-	let tenant = new Tenant(fname, lname, phone, email, address, dob)
-	tenant.save().then(console.log)
+async function addTenant(fname, lname, phone, email, address, dob) {
+	new Tenant(fname, lname, phone, email, address, dob).save()
+	.then(console.log);
 }
