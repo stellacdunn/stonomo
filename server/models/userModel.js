@@ -10,3 +10,8 @@ const userSchema = mongoose.Schema({
 });
 
 export const User = mongoose.model('Users', userSchema);
+
+export async function addUser(username, pass_hash, _facility) {
+	User.create(username, pass_hash, _facility)
+	.then(console.log);
+}

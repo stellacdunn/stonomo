@@ -14,3 +14,8 @@ const evictionsSchema = new mongoose.Schema({
 }, {timestamps: true});
 
 export const Eviction = mongoose.model("Eviction", evictionsSchema);
+
+export async function addEviction(tenant, facility, user, reason, details, evictedDate) {
+	Eviction.create(tenant, facility, user, reason, details, evictedDate)
+	.then(console.log);
+}

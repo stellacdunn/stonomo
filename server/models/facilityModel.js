@@ -11,3 +11,8 @@ const facilitySchema = new mongoose.Schema({
 }, {timestamps: true});
 
 export const Facility = mongoose.model("Facility", facilitySchema);
+
+export async function addFacility(name, address, phone, email, company) {
+	Facility.create({name, address, phone, email, company})
+	.then(console.log)
+}

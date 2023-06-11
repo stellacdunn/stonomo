@@ -11,3 +11,8 @@ const tenantSchema = new mongoose.Schema({
 }, {timestamps: true});
 
 export const Tenant = mongoose.model("Tenant", tenantSchema);
+
+export async function addTenant(fname, lname, phone, email, address, dob) {
+	Tenant.create(fname, lname, phone, email, address, dob)
+	.then(console.log);
+}
