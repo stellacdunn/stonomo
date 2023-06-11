@@ -1,8 +1,6 @@
 'use strict'
 import mongoose from 'mongoose';
 
-export { Facility, addFacility /*, updateFacility, deleteFacility*/ };
-
 //TODO: add validation and error handling
 const facilitySchema = new mongoose.Schema({
 	name: {type: String, required: true},
@@ -12,9 +10,4 @@ const facilitySchema = new mongoose.Schema({
 	company: String
 }, {timestamps: true});
 
-const Facility = mongoose.model("Facility", facilitySchema);
-
-async function addFacility(name, address, phone, email, company) {
-	new Facility({name, address, phone, email, company}).save()
-	.then(console.log)
-}
+export const Facility = mongoose.model("Facility", facilitySchema);

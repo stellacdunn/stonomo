@@ -1,7 +1,16 @@
-import { addReason, getReasons } from "./reasonModel.js";
-export { populateReasons };
+'use strict'
+import Reason from '../models/reasonModel';
 
-//TODO: wrap inside promise?
+export { addReason, getReasons, populateReasons };
+
+async function addReason(label, desc) {
+	new Reason({label, desc}).save()
+	.then(console.log);
+}
+
+async function getReasons() {
+	return Reason.find();
+}
 
 async function populateReasons() {
     const reasonDict = await import('./data/reasons.json', {

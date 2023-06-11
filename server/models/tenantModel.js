@@ -1,8 +1,6 @@
 'use strict'
 import mongoose from 'mongoose';
 
-export { Tenant, addTenant /*, updateTenant, deleteTenant */};
-
 const tenantSchema = new mongoose.Schema({
 	fname: {type: String, select: true, required: true},
 	lname: {type: String, select: true, required: true},
@@ -12,9 +10,4 @@ const tenantSchema = new mongoose.Schema({
 	dob: Date //TODO: add validation; age > 18
 }, {timestamps: true});
 
-const Tenant = mongoose.model("Tenant", tenantSchema);
-
-async function addTenant(fname, lname, phone, email, address, dob) {
-	new Tenant(fname, lname, phone, email, address, dob).save()
-	.then(console.log);
-}
+export const Tenant = mongoose.model("Tenant", tenantSchema);
