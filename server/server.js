@@ -1,50 +1,75 @@
-"use strict"
-//imports
-import mongoose from "mongoose";
-import("./facilityModel.js");
-import("./userModel.js");
-import("./tenantModel.js");
-import("./evictionModel.js");
-import { populateReasons } from "reasons.js"
+'use strict'
 
-//global constants
-const http = include("http");
+import express from 'express';
+import mongoose from 'mongoose';
+import path from 'path';
+import cookieParser from 'cookie-parser';
+import logger from 'morgan';
 
-console.log("Stonomo Server starting - " + Date.now());
+import { populateReasons } from './handlers/reasonsHandler'
+// import { Eviction} from './models/evictionModel';
+// import { Tenant } from './models/tenantModel';
+// import('./facilityModel.js');
+// import('./userModel.js');
 
-console.log("Connecting to Mongo DB");
+console.log('Stonomo Server starting - ' + Date.now());
 
-const conn = mongoose.connect("mongodb://db:27017/stonomo");
+//global consts
+const PORT = 8080;
+const app = express();
 
-console.log("Populating eviction reasons");
+console.log('Connecting to Mongo DB');
+const connection = 'mongodb://db:27017/stonomo';
+const connOpts = {};
+
+mongoose.connect(connection, connOpts).then(() => {
+    console.log('successfully connected to the database');
+}).catch(err => {
+    console.log('error connecting to the database');
+    console.log(err);
+    process.exit();
+});
+
+console.log('Setting up Express server');
+
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+
+app.get('/', (req, res) => {
+    console.log('connecting to route route "/"');
+    res.status(200).send('Stonomo server');
+});
+
+app.post('/search', (req, res, next) => {
+    //handle POST at /search
+
+    const searchRequest = {
+        //use Tenant.find to search for people
+        //Evictions.find({tenant: Tenant.find...})
+    }
+
+    req.on('error', printErrorAndNext(next)
+    );
+});
+
+console.log('Populating eviction reasons');
 const reasons = await populateReasons();
 
-console.log("Reasons:");
+//Populate tables
+console.log('Reasons:');
 console.log(reasons);
 
-console.log("Starting web server");
-const server = http.createServer();
+console.log(`Listening on port ${PORT}`);
+app.listen(PORT);
 
-server.on('post', (req, res) => {
-    //handle POST
-    const { method, url, headers } = req;
-    const userAgent = headers['user-agent'];
+console.log('Stonomo Server stopping - ' + Date.now());
 
-    let body = [];
-    request.on('error', (err) => {
-        // This prints the error message and stack trace to `stderr`.
+function printErrorAndNext(next) {
+    return (err) => {
+        console.error(err.message);
         console.error(err.stack);
-    }).on('data', (chunk) => {
-        body.push(chunk);
-    }).on('end', () => {
-        body = Buffer.concat(body).toString();
-        
-        res.writeHead(200, {"Content-Type": "text/plain"});
-
-        const responseBody = { headers, method, url, body };
-
-        res.end(JSON.stringify(responseBody));
-    });
-}).listen(8080);
-
-console.log("Stonomo Server stopping - " + Date.now());
+        next();
+    };
+}
