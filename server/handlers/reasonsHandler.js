@@ -4,7 +4,7 @@ import Reason from '../models/reasonModel';
 export { addReason, getReasons, populateReasons };
 
 async function addReason(label, desc) {
-	new Reason({label, desc}).save()
+	Reason.create({label, desc})
 	.then(console.log);
 }
 
