@@ -6,11 +6,11 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 
-import * as Reason from './models/reasonModel'
-import * as Eviction from './models/evictionModel';
-import * as Tenant from './models/tenantModel';
-import * as User from './models/userModel';
-import * as Facility from './models/facilityModel';
+import * as Reason from './models/reasonModel.js';
+import * as Eviction from './models/evictionModel.js';
+import * as Tenant from './models/tenantModel.js';
+import * as User from './models/userModel.js';
+import * as Facility from './models/facilityModel.js';
 
 console.log('Stonomo Server starting - ' + Date.now());
 

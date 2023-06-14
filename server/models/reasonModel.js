@@ -19,7 +19,7 @@ export async function getAllReasons() {
 }
 
 export async function populateReasons() {
-    const reasonDict = await import('./data/reasons.json', {
+    const reasonDict = await import('../data/reasons.json', { //TODO: use more resilient approach
         assert: { type: 'json' }
     });
 

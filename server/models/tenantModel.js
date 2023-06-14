@@ -1,6 +1,6 @@
 'use strict'
 import mongoose from 'mongoose';
-import { AddressSchema, PhoneSchema } from './sharedModels';
+import { AddressSchema, PhoneSchema } from './sharedModels.js';
 
 const TenantSchema = new mongoose.Schema({
 	fname: { type: String, select: true, required: true },
