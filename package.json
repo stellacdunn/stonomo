@@ -10,6 +10,7 @@
   "author": "S. Dunn <stellacdunn@gmail.com>",
   "license": "UNLICENSED",
   "dependencies": {
-    "cors": "^2.8.5"
+    "cors": "^2.8.5",
+    "sails": "^1.5.4"
   }
 }
