@@ -4,7 +4,7 @@ import { AddressSchema, PhoneSchema } from './sharedModels.js';
 
 const TenantSchema = new mongoose.Schema({
 	fname: { type: String, select: true, required: true },
-	mname: { type: String, select: true, required: true },
+	mname: { type: String, select: true, required: true, default: '' },
 	lname: { type: String, select: true, required: true },
 	phone: { type: [PhoneSchema], select: true, required: true },
 	email: { type: [String], select: true }, //TODO: add validation
@@ -12,23 +12,23 @@ const TenantSchema = new mongoose.Schema({
 	dob: { type: Date, required: true } //TODO: add validation; age > 18
 }, { timestamps: true });
 
-export const Tenant = mongoose.model('Tenant', TenantSchema);
+export const tenantModel = mongoose.model('Tenant', TenantSchema);
 
 export function addTenant(fname, lname, phone, email, address, dob) {
-	let t = Tenant.create(fname, lname, phone, email, address, dob)
+	let t = tenantModel.create(fname, lname, phone, email, address, dob)
 		.lean()
 		.then(console.log);
 	return t;
 }
 
 export function getTentantById(id) {
-	let t = Tenant.findById(id)
+	let t = tenantModel.findById(id)
 		.then(console.log);
 	return t;
 }
 
 export function getTentantByIdLean(id) {
-	let t = Tenant.findById(id)
+	let t = tenantModel.findById(id)
 		.lean()
 		.then(console.log);
 	return t;
@@ -42,7 +42,7 @@ export function updateTenant(id, ...fields) {
 		updateParams[key] = value;
 	}
 
-	let t = Tenant.findByIdAndUpdate(id, { $set: updateParams })
+	let t = tenantModel.findByIdAndUpdate(id, { $set: updateParams })
 		.lean()
 		.then(console.log);
 	return t;
@@ -50,7 +50,7 @@ export function updateTenant(id, ...fields) {
 
 //TODO: delete function needs to be protected for security reasons
 export function __deleteTenant(id) {
-	let t = Tenant.findByIdAndDelete(id)
+	let t = tenantModel.findByIdAndDelete(id)
 		.lean()
 		.then(console.log);
 	return t;

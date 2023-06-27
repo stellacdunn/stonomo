@@ -1,45 +1,49 @@
 'use strict'
 import mongoose from 'mongoose';
 
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+
 //TODO: add indexing
 const reasonSchema = new mongoose.Schema({
-    label: String,
-    desc: String
+    label: { type: String, select: true, required: true },
+    desc: { type: String, select: true, required: true },
+    enabled: { type: Boolean, default: true, required: true }
 });
 
-export const Reason = mongoose.model('Reason', reasonSchema);
+export const reasonModel = mongoose.model('Reason', reasonSchema);
 
-export async function addReason(label, desc) {
-    Reason.create({ label, desc })
-        .then(console.log);
-}
+export const allReasonsQuery = reasonModel.find();
+export const enabledReasonsQuery = allReasonsQuery.nor({ disabled: true });
 
-export async function getAllReasons() {
-    return Reason.find();
+export async function addReason(lbl, desc) {
+    // call replaceOne to prevent duplicate reasons accumulating with app restarts
+    reasonModel.replaceOne(
+        { label: lbl },
+        { label: lbl, desc: desc },
+        { upsert: true });
 }
 
 export async function populateReasons() {
-    const reasonDict = await import('../data/reasons.json', { //TODO: use more resilient approach
-        assert: { type: 'json' }
-    });
+    const reasonDict = require('../data/reasons.json');
 
     for (const r in reasonDict.default) {
         const desc = reasonDict.default[r];
         addReason(r, desc).catch(console.error);
     }
 
-    return await getAllReasons();
+    return await allReasonsQuery.lean();
 }
 
 export function getReasonById(id) {
-    let r = Reason.findById(id)
+    let r = reasonModel.findById(id)
         .lean()
         .then(console.log);
     return r;
 }
 
 export function getReason(label) {
-    let r = Reason.findOne({ label: label })
+    let r = reasonModel.findOne({ label: label })
         .lean()
         .then(console.log);
     return r;
@@ -53,7 +57,7 @@ export function updateReason(id, ...fields) {
         updateParams[key] = value;
     }
 
-    let r = Reason.findByIdAndUpdate(id, { $set: updateParams })
+    let r = reasonModel.findByIdAndUpdate(id, { $set: updateParams })
         .lean()
         .then(console.log);
     return r;
@@ -61,7 +65,7 @@ export function updateReason(id, ...fields) {
 
 //TODO: delete function needs to be protected for security reasons
 export function __deleteReason(id) {
-    let r = Reason.findByIdAndDelete(id)
+    let r = reasonModel.findByIdAndDelete(id)
         .lean()
         .then(console.log);
     return r;

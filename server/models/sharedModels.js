@@ -25,4 +25,4 @@ export const PhoneSchema = new mongoose.Schema({
     countryCode: { type: String, select: true, required: true, default: '1' },
     number: { type: String, select: true, required: true, match: PHONE_REGEXP },
     extension: { type: String, select: true }
-});
+}); //TODO: add setter to simplify phone number insertion

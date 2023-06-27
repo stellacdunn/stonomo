@@ -2,7 +2,7 @@ FROM node:lts
 
 COPY package.json /tmp/package.json
 RUN cd /tmp && npm install
-RUN mkdir -p /opt/stonomo && cp -a /tmp/node_modules /opt/stonomo/
+RUN mkdir -p /opt/stonomo/static && cp -a /tmp/node_modules /opt/stonomo/
 
 WORKDIR /opt/stonomo/
 COPY ./ /opt/stonomo/
